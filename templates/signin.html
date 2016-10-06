@@ -8,6 +8,7 @@
   <script>
     function onSuccess(googleUser) {
       console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+      window.location.href = "http://gpy.io/dashboard";
     }
     function onFailure(error) {
       console.log(error);
