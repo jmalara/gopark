@@ -17,8 +17,12 @@ def api():
   #retVal = lh.sensorAPI(
 
 @application.route('/')
-def dash_redirect():
+def splasht():
   return render_template("splash.html")
+  
+@application.route('/3')
+def direct3():
+  return render_template("3.html")
 
 @application.route("/dashboard")
 def dashboard():
