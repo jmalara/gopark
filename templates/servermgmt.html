@@ -1,0 +1,56 @@
+{% extends "layout.html" -%}
+{% block content -%}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<h1 class="page-header">Cost Analysis</h1>
+<div class="row placeholders">
+  <div id="appChart" class="col-xs-6 col-sm-4 placeholder"></div>
+  <div id="envChart" class="col-xs-6 col-sm-4 placeholder"></div>
+
+  <!--<div id="dcChart" class="col-xs-6 col-sm-4 placeholder"></div>-->
+    <script type="text/javascript">
+      new Highcharts.Chart({% print(envChart|safe) %});
+    </script> 
+    <script type="text/javascript">
+      new Highcharts.Chart({% print(dcChart|safe) %});
+    </script>
+
+    <script type="text/javascript">
+      new Highcharts.Chart({% print(appChart|safe) %});
+    </script> 
+</div>
+<h2 class="sub-header">Cost Breakdown</h2>
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <th>Cost</th>
+      <th>Hostname</th>
+      <th>Virtual</th>
+      <th>App</th>
+      <th>Tier</th>
+      <th>Environment</th>
+      <th>Location</th>
+      <th>CPU</th>
+      <th>Memory (MB)</th>
+    </thead>
+    </tbody>
+{% for row in therows %}
+    <tr>
+      <td>${% print(lh.genCost(row[10],row[6], row[8], row[9], 10, row[0])) %}</td>
+      <td>{{ row[0] }}</td>
+      <td>{{ row[10] }}</td>
+      <td>{{ row[3] }}</td>
+      <td>{{ row[5] }}</td>
+      <td>{{ row[6] }}</td>
+      <td>{{ row[7] }}</td>
+      <td>{{ row[8] }}</td>
+      <td>{{ row[9] }}</td>
+
+    </tr>
+{% endfor %}
+    </thead>
+    <tbody>
+  </tbody>
+</table>
+</div>
+{% endblock content %}
