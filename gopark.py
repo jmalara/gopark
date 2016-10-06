@@ -21,7 +21,7 @@ def splash():
   return render_template("splash.html")
 
 @application.route('/signin')
-def signup():
+def signin():
   return render_template("signin.html")
 
 @application.route('/signup')
