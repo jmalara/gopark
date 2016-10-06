@@ -32,13 +32,11 @@ body {
   
 
 </div></a>
-<div data-onsuccess="onSignIn"
-   data-scope="https://www.googleapis.com/auth/plus.login"
-   data-accesstype="offline"
-   data-redirecturi="https://www.example.com/redirect_uri" style="align:center" id="signin"></div>
+<div style="align:center" id="signin"></div>
   <script>
     function onSuccess(googleUser) {
       console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+      window.location.href = "http://gpy.io/dashboard";
     }
     function onFailure(error) {
       console.log(error);
