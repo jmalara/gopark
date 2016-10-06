@@ -17,9 +17,17 @@ def api():
   #retVal = lh.sensorAPI(
 
 @application.route('/')
-def splasht():
+def splash():
   return render_template("splash.html")
-  
+
+@application.route('/signin')
+def signup():
+  return render_template("signin.html")
+
+@application.route('/signup')
+def signup():
+  return render_template("signup.html")
+
 @application.route('/3')
 def direct3():
   return render_template("3.html")
