@@ -18,7 +18,7 @@ def api():
 
 @application.route('/')
 def dash_redirect():
-  return redirect("/dashboard")
+  return render_template("splash.html")
 
 @application.route("/dashboard")
 def dashboard():
