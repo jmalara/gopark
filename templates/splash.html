@@ -1,8 +1,21 @@
-<!-- #######  YAY, I AM THE SOURCE EDITOR! #########-->
+<!DOCTYPE html>
 <html>
 <head>
+  <meta name="google-signin-client_id" content="282810351687-mgke4nloakmii97bn4nojamd0k2036p7.apps.googleusercontent.com">
 <title>goPARKyourself!</title>
 <style>
+
+#signin {
+    width: 50%;
+    margin: 0 auto;
+}
+
+.abcRioButtonBlue {
+  display: block;
+    margin: auto;
+    width: 40%;
+}
+
 body { 
     background-image: url('static/img/v1.png');
     background-repeat: no-repeat;
@@ -13,7 +26,34 @@ body {
 </style>
 </head>
  <body>
-<a href="/dashboard"><div style="width:100%;height:100%"></div></a>
+<div id="outer" style="width:100%;text-align: center;">  
+  <div id="signin"></div>
+</div>
+  
+
+</div></a>
+<div style="align:center" id="my-signin2"></div>
+  <script>
+    function onSuccess(googleUser) {
+      console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+    }
+    function onFailure(error) {
+      console.log(error);
+    }
+    function renderButton() {
+      gapi.signin2.render('signin', {
+        'scope': 'profile email',
+        'width': 240,
+        'height': 50,
+        'longtitle': true,
+        'theme': 'dark',
+        'onsuccess': onSuccess,
+        'onfailure': onFailure
+      });
+    }
+  </script>
+
+  <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
  </body>
 <!-- img style="display: float; margin-left: auto; margin-right: auto; vertical-align: middle;" src="v1.png" alt="interactive connection"  / -->
 </body>
