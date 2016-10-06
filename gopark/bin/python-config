@@ -1,4 +1,4 @@
-#!/var/www/html/lighthouse/lighthouse/bin/python
+#!/usr/share/nginx/gopark/gopark/bin/python
 
 import sys
 import getopt
