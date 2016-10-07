@@ -58,12 +58,16 @@ class gopark(object):
   def getLeaders(self):
     db = MySQLdb.connect(self.rdscnx['host'],self.rdscnx['username'],self.rdscnx['password'],self.rdscnx['db'])
     cursor = db.cursor() 
-    cursor.execute("""select firstname, lastname, lcase(firstname) as avatar, (SELECT SUM(points) from points where users.id=points.user_id) as points from users order by points desc limit 5""")
+    cursor.execute("""select firstname, lastname, avatar as avatar, (SELECT SUM(points) from points where users.id=points.user_id) as points from users order by points desc limit 5""")
     lrows = cursor.fetchall()
     html = ''
     for row in lrows:
-      html = html + '<div class="row"><div class="col-xs-12 col-md-2">' + '<img src="static/img/' + str(row[2]) + '.png" width="50px" height="50px alt=\"some_text\" >'
-      html = html + '<div class="names">' + str(row[0]) + '</div></div><div class="col-xs-12 col-md-4"><h4>' + str(row[3]) + '</h4></div></div>'
+      if str(row[3]) == 'None':
+        pointnum = '0'
+      else:
+        pointnum = str(row[3]) 
+      html = html + '<div class="row"><div class="col-xs-12 col-md-2">' + '<img src="' + str(row[2]) + '" width="50px" height="50px alt=\"some_text\" >'
+      html = html + '<div class="names">' + str(row[0]) + '</div></div><div class="col-xs-12 col-md-4"><h4>' + pointnum + ' points</h4></div></div>'
 
     return html
 
