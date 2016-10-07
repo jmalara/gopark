@@ -1,14 +1,14 @@
 .navbar-inverse {
-    color: white !important;
-    background-color: #354964 !important;
+    color: #354964 !important;
+    background-color: white !important;
   }
 
 .navbar-brand {
-    color: white !important;
+    color: #354964 !important;
   }
 
 .navbar-nav {
-    color: white !important;
+    color: #354964 !important;
 }
 
 #mainbox {
@@ -19,6 +19,10 @@
 
 .row {
   padding-bottom:20px;
+}
+
+body {
+  background-color: #7fb3ff !important;
 }
 
 .names {

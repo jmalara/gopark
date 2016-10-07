@@ -29,143 +29,34 @@ class gopark(object):
     cursor = db.cursor() 
     cursor.execute("""select firstname, lastname, lcase(firstname) as avatar, (SELECT SUM(points) from points where users.id=points.user_id) as points from users order by points desc limit 5""")
     lrows = cursor.fetchall()
-
     return lrows
 
+  def getHistory(self):
+    db = MySQLdb.connect(self.rdscnx['host'],self.rdscnx['username'],self.rdscnx['password'],self.rdscnx['db'])
+    cursor = db.cursor() 
+    cursor.execute("""select year(DATE_SUB(historytime, INTERVAL 7 HOUR)) as year, month(DATE_SUB(historytime, INTERVAL 7 HOUR)) as month, day(DATE_SUB(historytime, INTERVAL 7 HOUR)) as day, hour(DATE_SUB(historytime, INTERVAL 7 HOUR)) as hour, minute(DATE_SUB(historytime, INTERVAL 7 HOUR)) as minute, cars from zone_history order by historytime""")
+    hrows = cursor.fetchall()
+    theseries = ""
+    for row in hrows:
+      theseries = theseries +  "[Date.UTC(" + str(row[0]) + "," + str(row[1]) + "," + str(row[2]) + "," + str(row[3]) + "," + str(row[4]) + "), " + str(row[5]) + "],"
+    return theseries
+
+      #hours, minutes = map(int, "00:00".split(':'))
+      #theseries = theseries + "Date.UTC(2016, 8, 5" +  str(row[0]) + ","
+    #print(theseries)
+
+    #2016-10-07 03:00:00
+
+   # [Date.UTC(2013, 3, 22, 1, 15), 12.7], 
+      #      [Date.UTC(2012, 3, 24, 3, 20), 13.5], 
+      #      [Date.UTC(2012, 2, 22, 2, 25), 18.8]
+    #return theseries
+    #7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6
+  #  sTitle = 'title: {text: \'By Application\'}'
+ #   sTooltip = 'tooltip: {pointFormat: \'{series.name}: <b>${point.y:.1f} ({point.percentage:.1f}%)</b>\'}'
+#    sSeries = 'series: [{name: \'Cost\',colorByPoint: true,data: [{name: \'ATG\',y: ' + str(c_atg) + '},{name: \'IDM\',y: ' + str(c_idm) + '},{name: \'OAG\',y: ' + str(c_oag) + '},{name: \'Merlin\',y: ' + str(c_merlin) + '},{name: \'Endeca\',y: ' + str(c_endeca) + '},{name: \'OracleDB\',y: ' + str(c_oracledb) + '},{name: \'MySQL\',y: ' + str(c_mysql) + '},{name: \'BI\',y: ' + str(c_bi) + '},{name: \'EBS\',y: ' + str(c_ebs) + '},{name: \'Sabrix\',y: ' + str(c_sabrix) + '},{name: \'Digital\',y: ' + str(c_digi) + '},{name: \'Pioneer\',y: ' + str(c_pio) + '},{name: \'SOA\',y: ' + str(c_soa) + '},{name: \'TBB\',y: ' + str(c_tbb) + '},{name: \'MCT\',y: ' + str(c_cga) + '},{name: \'Other\',y: ' + str(c_other) + '}]}]'
+#    sRenderto = 'histChart'
+#    return ('{chart: {renderTo: ' + sRenderto + ', type: "pie",plotBackgroundColor: null,plotBorderWidth: null,plotShadow: false,}' + ',' + sSeries + ',' + sTooltip + ',' + sPlotOptions + ',' + sTitle + ',' + sLegend + '}')
 
 
-
-  def genCostChart(self, type, data):
-    # Global chart values
-    sLegend = '"legend":{"enabled":true}'
-    sPlotOptions = 'plotOptions: {pie: {allowPointSelect: true,cursor: \'pointer\',dataLabels: {enabled: true},showInLegend: false}}'
-    
-    if type == 'env':
-      c_dev = 0
-      c_qa = 0
-      c_uat = 0
-      c_prd = 0
-
-      for row in data:
-        # Calc cost
-        c = self.genCost(row[10],row[7], row[8], row[9], 10, row[0])
-        if row[6] == 'dev':
-          c_dev += c
-        elif  row[6] == 'qa':
-          c_qa +=  c
-        elif  row[6] == 'uat':
-          c_uat +=  c
-        elif  row[6] == 'prd':
-          c_prd += c
-
-      sTitle = 'title: {text: \'By Environment\'}'
-      sTooltip = 'tooltip: {pointFormat: \'{series.name}: <b>${point.y:.1f} ({point.percentage:.1f}%)</b>\'}'
-      sSeries = 'series: [{name: \'Cost\',colorByPoint: true,data: [{name: \'DEV\',y: ' + str(c_dev) + '}, {name:\'QA\',y:  ' + str(c_qa) + '}, {name: \'UAT\',y: ' + str(c_uat) + '}, {name: \'PRD\',y: ' + str(c_prd) + '}]}]'
-      sRenderto = 'envChart'
-
-
-    if type == 'dc':
-      c_lv = 0
-      c_es = 0
-      c_other = 0
-      for row in data:
-        # Calc cost
-        c = self.genCost(row[10],row[7], row[8], row[9], 10, row[0])
-        if row[7] == 'LVDC':
-          c_lv += c
-        elif  row[7] == 'ESDC':
-          c_es += c
-        else:
-          c_other +=  c
-
-      sTitle = 'title: {text: \'By Datacenter\'}'
-      sTooltip = 'tooltip: {pointFormat: \'{series.name}: <b>${point.y:.1f} ({point.percentage:.1f}%)</b>\'}'
-      sSeries = 'series: [{name: \'Cost\',colorByPoint: true,data: [{name: \'ESDC\',y: ' + str(c_es) + '}, {name:\'LVDC\',y:  ' + str(c_lv) + '}, {name: \'Other\',y: ' + str(c_other) + '}]}]'
-      sRenderto = 'dcChart'
-
-
-    if type == 'app':
-      c_atg = 0
-      c_idm = 0
-      c_oag = 0
-      c_merlin = 0
-      c_endeca = 0
-      c_agile = 0
-      c_oracledb = 0
-      c_mysql = 0
-      c_bi = 0
-      c_ebs = 0
-      c_sabrix = 0
-      c_digi = 0
-      c_pio = 0
-      c_soa = 0 
-      c_rm = 0
-      c_tbb = 0
-      c_cga = 0
-      c_other = 0
-      for row in data:
-        # Calc cost
-        c = self.genCost(row[10],row[7], row[8], row[9], 10, row[0])
-        if row[3] == 'atg':
-          c_atg += c
-        elif  row[3] == 'idm':
-          c_idm +=  c
-        elif  row[3] == 'oag':
-          c_oag +=  c
-        elif  row[3] == 'merlin':
-          c_merlin +=  c
-        elif  row[3] == 'endeca':
-          c_endeca +=  c
-        elif  row[3] == 'oracledb':
-          c_oracledb +=  c
-        elif  row[3] == 'mysql':
-          c_mysql +=  c
-        elif  row[3] == 'bi':
-          c_bi +=  c
-        elif  row[3] == 'ebs':
-          c_ebs +=  c
-        elif  row[3] == 'sabrix':
-          c_sabrix +=  c
-        elif  row[3] == 'digi':
-          c_digi +=  c
-        elif  row[3] == 'pio':
-          c_pio +=  c
-        elif  row[3] == 'soa' or row[3] == 'bpel' or row[3] == 'osb':
-          c_soa +=  c
-        elif  row[3] == 'tbb' or row[3] == 'liferay':
-          c_tbb +=  c
-        elif  row[3] == 'cga':
-          c_cga +=  c
-        else:
-          c_other +=  c
-
-      sTitle = 'title: {text: \'By Application\'}'
-      sTooltip = 'tooltip: {pointFormat: \'{series.name}: <b>${point.y:.1f} ({point.percentage:.1f}%)</b>\'}'
-      sSeries = 'series: [{name: \'Cost\',colorByPoint: true,data: [{name: \'ATG\',y: ' + str(c_atg) + '},{name: \'IDM\',y: ' + str(c_idm) + '},{name: \'OAG\',y: ' + str(c_oag) + '},{name: \'Merlin\',y: ' + str(c_merlin) + '},{name: \'Endeca\',y: ' + str(c_endeca) + '},{name: \'OracleDB\',y: ' + str(c_oracledb) + '},{name: \'MySQL\',y: ' + str(c_mysql) + '},{name: \'BI\',y: ' + str(c_bi) + '},{name: \'EBS\',y: ' + str(c_ebs) + '},{name: \'Sabrix\',y: ' + str(c_sabrix) + '},{name: \'Digital\',y: ' + str(c_digi) + '},{name: \'Pioneer\',y: ' + str(c_pio) + '},{name: \'SOA\',y: ' + str(c_soa) + '},{name: \'TBB\',y: ' + str(c_tbb) + '},{name: \'MCT\',y: ' + str(c_cga) + '},{name: \'Other\',y: ' + str(c_other) + '}]}]'
-      sRenderto = 'appChart'
-
-
-    return ('{chart: {renderTo: ' + sRenderto + ', type: "pie",plotBackgroundColor: null,plotBorderWidth: null,plotShadow: false,}' + ',' + sSeries + ',' + sTooltip + ',' + sPlotOptions + ',' + sTitle + ',' + sLegend + '}')
-
-  def genCost(self, virtual, location, cpu, mem, storage,name):
-    from decimal import Decimal, ROUND_HALF_UP
-    if virtual == 'true':
-      c_cpu = 50
-      c_mem = '0.10'
-      c_storage = 10
-    if virtual == 'false':
-      c_cpu = 100
-      c_mem = '.25'
-      c_storage = 10
-
-    if cpu is not None:
-      f_cpu = Decimal(cpu) * Decimal(c_cpu)
-    else:
-      return(0)
-    if mem is not None:
-      f_mem = Decimal(mem) * Decimal(c_mem)
-    else:
-      return(0)
-    #f_storage = storage * c_storage
-    f_total = f_cpu + f_mem
-    return(round(f_total,0))
+  #return lrows

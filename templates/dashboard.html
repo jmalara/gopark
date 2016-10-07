@@ -4,18 +4,28 @@
 
 
 
+
+<div class="row" style="padding-bottom:20px;">
+  <div class="col-xs-12 col-md-8">
+    <div style="width:100%;height:500px;background: #000;"></div>
+    <div id="container" style="width:100%; height: 300px;"></div>
+</div>
+
+<div class="col-xs-6 col-md-4" style="background-color:white;height:700px;">
+<h4> How did you get to work today?</h4>
 <div style="margin: 0 auto; width:100%" class="row">
-  <div class="col-xs-6 col-sm-3"><img src="static/img/bike.png" width="150px" height="150px" alt="some_text" ></div>
-  <div class="col-xs-6 col-sm-3"><img src="static/img/bus.png" width="150px" height="150px" alt="some_text" ></div>
+  <div class="col-xs-6 col-sm-3"><img src="static/img/bike.png" width="50px" height="50px" alt="some_text" >
+  <div class="names">Bicycle</div></div>
+
+  <div class="col-xs-6 col-sm-3"><img src="static/img/bus.png" width="50px" height="50px" alt="some_text" >
+  <div class="names">Bus</div></div>
    <div class="clearfix visible-xs-block"></div>
-  <div class="col-xs-6 col-sm-3"><img src="static/img/train.jpg" width="150px" height="150px" alt="some_text" ></div>
+  <div class="col-xs-6 col-sm-3"><img src="static/img/train.jpg" width="50px" height="50px" alt="some_text" >
+  <div class="names">Train</div></div>
   <!-- Add the extra clearfix for only the required viewport -->
 </div>
 
-<div class="row">
-  <div class="col-xs-12 col-md-8"></div>
-
-<div class="col-xs-6 col-md-4"><h2>Leader Board</h2>
+<h3>Leader Board</h3>
 {% for row in theleaders%}
   <div class="row">
       <div class="col-xs-12 col-md-2">
@@ -27,8 +37,45 @@
 {% endfor %}
 </div>
 
-<div>
 
+<script>
+$(function () {
+    $('#container').highcharts({
+        chart: {
+            type: 'line'
+        },
+        title: {
+            text: 'Today\'s Cars'
+        },
+        xAxis: {
+            type: 'datetime',
+            dateTimeLabelFormats : {
+        hour: '%I %p',
+        minute: '%I:%M %p'
+    }
+        },
+        yAxis: {
+            title: {
+                text: 'Cars)'
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: false
+            }
+        },
+        series: [{
+            name: 'Cars',
+            data: [{{ history}}]
+        }]
+    });
+});
+</script>
+</div>
+</div>
 </div>
 <!--
     <div class="col-xs-6 col-sm-3 placeholder">

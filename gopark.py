@@ -19,6 +19,16 @@ def apizone():
   gpy = gopark()
   return   gpy.apiZone()
 
+@application.route('/apiuser', methods = ['POST'])
+def apiuser():
+  gpy = gopark()
+  jsondata = request.json
+  sensorid =jsondata.get("sensor") 
+  print("\n" + json.dumps(request.json) + "\n")
+  print("\n" + jsondata.get("sensor") + "\n")
+  gpy.apiSensor(sensorid)
+  return "1"
+
   #retVal = lh.sensorAPI(
 
 @application.route('/')
@@ -45,7 +55,8 @@ def direct3():
 def dashboard():
   gpy = gopark()
   theleaders = gpy.getLeaders()
-  return render_template("dashboard.html", theleaders=theleaders)
+  history = gpy.getHistory()
+  return render_template("dashboard.html", theleaders=theleaders, history=history)
 
 if __name__ == "__main__":
   application.run(host='0.0.0.0', port=5000, debug=True)
