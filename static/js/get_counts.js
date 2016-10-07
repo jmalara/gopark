@@ -1,4 +1,3 @@
-▽
 angular.module('get_counts', [])
 .controller('car_counts', function($scope, $http) {
   $scope.getData = function(){
