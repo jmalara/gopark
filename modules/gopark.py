@@ -17,9 +17,12 @@ class gopark(object):
     db = MySQLdb.connect(self.rdscnx['host'],self.rdscnx['username'],self.rdscnx['password'],self.rdscnx['db'])
     cursor = db.cursor()
     thesql = """select id from users where email_address = '%s' limit 1""" % (email)
-    #cursor.execute(thesql)
-    #if cursor.fetchone()[0]:
-    return "ok"
+    cursor.execute(thesql)
+    row_count = cursor.rowcount
+    if row_count == 0:
+      print "stuff"
+    else:
+      return "ok"     
 
   def apiPoints(self, user, thetype):
     if thetype == 'bike':
