@@ -20,7 +20,7 @@ class gopark(object):
     cursor.execute(thesql)
     row_count = cursor.rowcount
     if row_count == 0:
-      thesql = """INSERT INTO users (email_address, firstname, lastname, avatar )VALUES ('%s','%s','%s')""" % (email, fname, lname, avatar)
+      thesql = """INSERT INTO users (email_address, firstname, lastname, avatar )VALUES ('%s','%s','%s','%s')""" % (email, fname, lname, avatar)
       cursor.execute(thesql)
       db.commit()
     else:
