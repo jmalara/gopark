@@ -1,3 +1,4 @@
+{% raw %}
 angular.module('get_counts', [])
 .controller('car_counts', function($scope, $http) {
     $http.get('http://gpy.io/apizone').
@@ -5,3 +6,4 @@ angular.module('get_counts', [])
             $scope.car_counts = response.data;
         });
 });
+{% endraw %}
