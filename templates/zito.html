@@ -5,12 +5,28 @@
 		<title>CarCounts</title>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
     	<script src="static/js/get_counts.js"></script>
+	<script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
 	</head>
 
-	<body>
+	<body onload="init();">
 		<div ng-controller="car_counts">
-			<p>{{car_counts.content}}</p>
+			<canvas id="demoCanvas" width="500" height="300"></canvas>
+			<p>Underground: {{car_counts.Underground}}</p>
+                        <p>North Lot: {{car_counts.North}}</p>
+                        <p>Carpool Spots: {{car_counts.Carpool}}</p>
 		</div>
+		<script>
+			function init() {
+				var stage = new createjs.Stage("demoCanvas");
+				var circle = new createjs.Shape();
+				circle.graphics.beginFill("DeepSkyBlue").drawCircle(0, 0, 50);
+				circle.x = 100;
+				circle.y = 100;
+				stage.addChild(circle);
+
+				stage.update();
+			}
+		</script>
 	</body>
 </html>
 {% endraw %}
