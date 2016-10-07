@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, json
+from flask import Flask, render_template, request, redirect, json, session
 from modules import gopark
 from modules.gopark import gopark
 
@@ -26,8 +26,8 @@ def loginuser():
   fname = request.form['fname']
   lname = request.form['lname']
   avatar = request.form['avatar'] 
-  print(email)
   gpy.loginUser(email, fname, lname, avatar)
+  session['email'] = email
   #gpy.apiSensor(sensorid)
   return "ok"
 
@@ -44,7 +44,7 @@ def apiuser():
 @application.route('/apipoints', methods = ['POST'])
 def apipoint():
   gpy = gopark()
-  user = request.form['user']
+  user = session['email']
   thetype = request.form['type']
   gpy.apiPoints(user, thetype)
   return gpy.getLeaders()
@@ -73,10 +73,12 @@ def direct3():
 
 @application.route("/dashboard")
 def dashboard():
+  print(session['email'])
   gpy = gopark()
   leaderhtml = gpy.getLeaders()
   history = gpy.getHistory()
   return render_template("dashboard.html", leaderhtml=leaderhtml  , history=history)
 
 if __name__ == "__main__":
+  application.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWXs,?Ra'
   application.run(host='0.0.0.0', port=80, debug=True)

@@ -36,10 +36,12 @@ class gopark(object):
     db = MySQLdb.connect(self.rdscnx['host'],self.rdscnx['username'],self.rdscnx['password'],self.rdscnx['db'])
     cursor = db.cursor()
     thesql = """select id from users where email_address = '%s' limit 1""" % (user)
+    print(thesql)
     cursor.execute(thesql)
     row = cursor.fetchone()
     userid = row[0]
     thesql = """INSERT INTO points (type, points, user_id )VALUES ('%s','%s','%s')""" % (thetype, pointval, userid)
+    print(thesql)
     cursor.execute(thesql)
     db.commit()
     return "\nOK\n"
