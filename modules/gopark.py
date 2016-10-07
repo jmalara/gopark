@@ -13,6 +13,24 @@ class gopark(object):
     db.commit()
     return "\nOK\n"
 
+  def apiPoints(self, user, thetype):
+    if thetype == 'bike':
+      pointval = 3
+    elif thetype == 'train':
+      pointval = 3
+    else:
+      pointval = 2
+    db = MySQLdb.connect(self.rdscnx['host'],self.rdscnx['username'],self.rdscnx['password'],self.rdscnx['db'])
+    cursor = db.cursor()
+    thesql = """select id from users where email_address = '%s' limit 1""" % (user)
+    cursor.execute(thesql)
+    row = cursor.fetchone()
+    userid = row[0]
+    thesql = """INSERT INTO points (type, points, user_id )VALUES ('%s','%s','%s')""" % (thetype, pointval, userid)
+    cursor.execute(thesql)
+    db.commit()
+    return "\nOK\n"
+
   def apiZone(self):
     db = MySQLdb.connect(self.rdscnx['host'],self.rdscnx['username'],self.rdscnx['password'],self.rdscnx['db'])
     cursor = db.cursor()
@@ -29,7 +47,12 @@ class gopark(object):
     cursor = db.cursor() 
     cursor.execute("""select firstname, lastname, lcase(firstname) as avatar, (SELECT SUM(points) from points where users.id=points.user_id) as points from users order by points desc limit 5""")
     lrows = cursor.fetchall()
-    return lrows
+    html = ''
+    for row in lrows:
+      html = html + '<div class="row"><div class="col-xs-12 col-md-2">' + '<img src="static/img/' + str(row[2]) + '.png" width="50px" height="50px alt=\"some_text\" >'
+      html = html + '<div class="names">' + str(row[0]) + '</div></div><div class="col-xs-12 col-md-4"><h4>' + str(row[3]) + '</h4></div></div>'
+
+    return html
 
   def getHistory(self):
     db = MySQLdb.connect(self.rdscnx['host'],self.rdscnx['username'],self.rdscnx['password'],self.rdscnx['db'])

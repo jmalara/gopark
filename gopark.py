@@ -29,6 +29,14 @@ def apiuser():
   #gpy.apiSensor(sensorid)
   return "1"
 
+@application.route('/apipoints', methods = ['POST'])
+def apipoint():
+  gpy = gopark()
+  user = request.form['user']
+  thetype = request.form['type']
+  gpy.apiPoints(user, thetype)
+  return gpy.getLeaders()
+
   #retVal = lh.sensorAPI(
 
 @application.route('/')
@@ -54,9 +62,9 @@ def direct3():
 @application.route("/dashboard")
 def dashboard():
   gpy = gopark()
-  theleaders = gpy.getLeaders()
+  leaderhtml = gpy.getLeaders()
   history = gpy.getHistory()
-  return render_template("dashboard.html", theleaders=theleaders, history=history)
+  return render_template("dashboard.html", leaderhtml=leaderhtml  , history=history)
 
 if __name__ == "__main__":
   application.run(host='0.0.0.0', port=80, debug=True)
