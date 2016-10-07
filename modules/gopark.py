@@ -1,4 +1,5 @@
 import MySQLdb
+from flask import json
 class gopark(object):
   rdscnx= {'host': 'jgross-hack-db-cluster-1.cluster-culomlubyiwb.us-west-2.rds.amazonaws.com',
   'username': 'jgross',
@@ -12,7 +13,25 @@ class gopark(object):
     db.commit()
     return "\nOK\n"
 
+  def apiZone(self):
+    db = MySQLdb.connect(self.rdscnx['host'],self.rdscnx['username'],self.rdscnx['password'],self.rdscnx['db'])
+    cursor = db.cursor()
+    cursor.execute("""SELECT name, cur_cars FROM zones""")
+    return_data = {}
+    for row in cursor.fetchall():
+      name = row[0]
+      cur_cars = row[1]
+      return_data[name] = cur_cars
+    return json.dumps(return_data)
 
+  def getLeaders(self):
+    db = MySQLdb.connect(self.rdscnx['host'],self.rdscnx['username'],self.rdscnx['password'],self.rdscnx['db'])
+    cursor = db.cursor() 
+    cursor.execute("""select firstname, lastname from users order by firstname asc limit 5""")
+    lrows = cursor.fetchall()
+    for row in lrows:
+      print("test")
+    #return lrows
 
 
 

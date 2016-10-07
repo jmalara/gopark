@@ -14,6 +14,11 @@ def api():
   gpy.apiSensor(sensorid)
   return "1"
 
+@application.route('/apizone')
+def apizone():
+  gpy = gopark()
+  return   gpy.apiZone()
+
   #retVal = lh.sensorAPI(
 
 @application.route('/')
@@ -21,7 +26,7 @@ def splash():
   return render_template("splash.html")
 
 @application.route('/signin')
-def signin():
+def sign():
   return render_template("signin.html")
 
 @application.route('/signup')
@@ -34,30 +39,11 @@ def direct3():
 
 @application.route("/dashboard")
 def dashboard():
+  gpy = gopark()
+  theleaders = gpy.getLeaders()
+  for row in theleaders:
+    print("test")
   return render_template("dashboard.html")
-
-@application.route("/cost")
-def cost():
-  lh = lighthouse()
-  therows = lh.getServers('all')
-  envChart = lh.genCostChart('env', therows)
-  dcChart = lh.genCostChart('dc', therows)
-  appChart = lh.genCostChart('app', therows)
-  return render_template("cost.html",title="title", lh=lh, therows = therows, envChart=envChart, appChart=appChart, dcChart=dcChart,)
-
-@application.route("/servermgmt")
-def serverMgmt():
-  lh = lighthouse()
-  therows = lh.getServers('all')
-  envChart = lh.genCostChart('env', therows)
-  dcChart = lh.genCostChart('dc', therows)
-  appChart = lh.genCostChart('app', therows)
-  return render_template("servermgmt.html",title="title", lh=lh, therows = therows, envChart=envChart, appChart=appChart, dcChart=dcChart,)
-
-# Foreman API Function
-@application.route("/api/foreman")
-def forman_return():
-   ForemanAPI.getHosts()
 
 if __name__ == "__main__":
   application.run(host='0.0.0.0', port=5000, debug=True)

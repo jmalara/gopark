@@ -1,24 +1,38 @@
 {% extends "layout.html" -%}
 {% block content -%}
-<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-  <h1 class="page-header">Dashboard</h1>
-  <div class="row placeholders">
+<div id="mainbox" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
-  <div class="row">
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
+
+
+<div style="margin: 0 auto; width:100%" class="row">
+  <div class="col-xs-6 col-sm-3"><img src="static/img/bike.png" width="150px" height="150px" alt="some_text" ></div>
+  <div class="col-xs-6 col-sm-3"><img src="static/img/bus.png" width="150px" height="150px" alt="some_text" ></div>
+   <div class="clearfix visible-xs-block"></div>
+  <div class="col-xs-6 col-sm-3"><img src="static/img/train.jpg" width="150px" height="150px" alt="some_text" ></div>
+  <!-- Add the extra clearfix for only the required viewport -->
 </div>
-    <!--
+
+<div class="row">
+  <div class="col-xs-12 col-md-8"><script src='https://maps.googleapis.com/maps/api/js?v=3.exp'></script><div style='overflow:hidden;height:440px;width:700px;'><div id='gmap_canvas' style='height:440px;width:700px;'></div><div><small><a href="http://www.embedgooglemaps.com/en/">Generate your map here, quick and easy!                  Give your customers directions                  Get found</a></small></div><div><small><a href="https://top10geeks.com/top-10-best-bluetooth-speakers-2016/">Top 10 Bluetooth speakers of 2016</a></small></div><style>#gmap_canvas img{max-width:none!important;background:none!important}</style></div><script type='text/javascript'>function init_map(){var myOptions = {zoom:17,center:new google.maps.LatLng(34.01954100251935,-118.49113219140168),mapTypeId: google.maps.MapTypeId.HYBRID};map = new google.maps.Map(document.getElementById('gmap_canvas'), myOptions);marker = new google.maps.Marker({map: map,position: new google.maps.LatLng(34.01954100251935,-118.49113219140168)});infowindow = new google.maps.InfoWindow({content:'<strong>Title</strong><br>Beachbody Santa Monica<br>'});google.maps.event.addListener(marker, 'click', function(){infowindow.open(map,marker);});infowindow.open(map,marker);}google.maps.event.addDomListener(window, 'load', init_map);</script></div>
+
+<div class="col-xs-6 col-md-4"><h2>Leader Board</h2>
+{% for row in theleaders%}
+  <div class="row">
+      <div class="col-xs-12 col-md-2">
+      <img src="static/img/{{ row[0] }}.png" width="50px" height="50px" alt="some_text" >
+      <div class="names">{{ row[0] }}</div>
+      </div>
+  <div class="col-xs-12 col-md-4"><h4>500 Points</h4></div>
+</div>
+{% endfor %}
+
+
+</div>
+
+<div>
+
+</div>
+<!--
     <div class="col-xs-6 col-sm-3 placeholder">
       <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
       <h4>Label</h4>
