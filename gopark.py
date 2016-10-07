@@ -26,6 +26,7 @@ def loginuser():
   fname = request.form['fname']
   lname = request.form['lname']
   avatar = request.form['avatar'] 
+  print(email)
   gpy.loginUser(email, fname, lname, avatar)
   #gpy.apiSensor(sensorid)
   return "ok"
