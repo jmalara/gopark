@@ -7,11 +7,9 @@
 
         <body ng-controller="car_counts">
                 <div>
-                     	<canvas id="myDrawing" width="800" height="500">
+                     	<canvas id="myDrawing" width="1120" height="768">
                                 <p>Your browser doesn't support canvas.</p>
                         </canvas>
-
-                        <p>Carpool Spots: {{car_counts.Carpool}}</p>
                 </div>
                 <script>
                         angular.module('get_counts', [])
@@ -23,18 +21,67 @@
                                                         var drawingCanvas = document.getElementById('myDrawing');
                                                         if(drawingCanvas.getContext) {
                                                                 var context = drawingCanvas.getContext('2d');
-                                                                if ($scope.car_counts.Carpool > 5){
-                                                                        context.fillStyle = "red";
+                                                                if ($scope.car_counts.North < 2){
+                                                                    context.fillStyle = "#CB4335";
+                                                                } else if ($scope.car_counts.North < 20){
+                                                                    context.fillStyle = "#F4D03F";
                                                                 } else {
-                                                                        context.fillStyle = "green";
+                                                                    context.fillStyle = "#2ECC71";
                                                                 }
-                                                                context.fillRect(10, 10, 100, 100);
+                                                                context.fillRect(400, 10, 700, 650);
+								context.strokeRect(400, 10, 700, 650);
+
+                                                                context.fillStyle = "#F4D03F";
+                                                                context.fillRect(10, 10, 390, 650)
+								context.strokeRect(10, 10, 390, 650)
+                                                            
+                                                                if ($scope.car_counts.Underground < 5){
+                                                                    context.fillStyle = "#CB4335";
+                                                                } else if ($scope.car_counts.Underground < 70){
+                                                                    context.fillStyle = "#F4D03F";
+                                                                } else {
+                                                                    context.fillStyle = "#2ECC71";
+                                                                }
+                                                                context.fillRect(210, 210, 640, 450);
+                                                            	context.strokeRect(210, 210, 640, 450);
+
+                                                                context.fillStyle = "#CB4335";
+                                                                context.fillRect(210, 10, 190, 350)
+                                                                context.strokeRect(210, 10, 190, 350)
+
+                                                                context.fillStyle = "#CB4335";
+                                                                context.fillRect(10, 510, 550, 150)
+								context.strokeRect(10, 510, 550, 150)
+
+								context.fillStyle = "#2ECC71";
+                                                                context.fillRect(950, 50, 150, 450)
+								context.strokeRect(950, 50, 150, 450)
+
+								context.fillStyle = "#000";
+								context.font="56px Helvetica";
+								context.fillText("3",80,270);
+								context.fillText("9",275,190);
+								context.fillText("1",260,610);
+                                                                if ($scope.car_counts.Underground < 70){
+                                                                    context.fillStyle = "#000";
+                                                                } else {
+                                                                    context.fillStyle = "#FFF";
+                                                                }
+								context.fillText($scope.car_counts.Underground,550,410);
+								if ($scope.car_counts.North < 20){
+                                                                    context.fillStyle = "#000";
+                                                                } else {
+                                                                    context.fillStyle = "#FFF";
+                                                                }
+								context.fillText($scope.car_counts.North,700,120);
+								context.fillStyle = "#FFF";
+                                                                context.fillText("10",1000,290);
                                                         }
                                                 });
 
                                         };
 
-                                setInterval($scope.getData, 1000);
+                          	setInterval($scope.getData, 5000);
 
                         });
                 </script>

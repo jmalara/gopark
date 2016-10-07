@@ -1,0 +1,52 @@
+<html>
+ <head>
+   <meta name="google-signin-client_id" content="282810351687-mgke4nloakmii97bn4nojamd0k2036p7.apps.googleusercontent.com">
+ <title>Go Park Yourself</title>
+ </head>
+ <body>
+   <div id="my-signin2"></div>
+   <script>
+     function onSuccess(googleUser) {
+       // Useful data for your client-side scripts:
+       var profile = googleUser.getBasicProfile();
+       console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+       console.log('Full Name: ' + profile.getName());
+       console.log('Given Name: ' + profile.getGivenName());
+       console.log('Family Name: ' + profile.getFamilyName());
+       console.log("Image URL: " + profile.getImageUrl());
+       console.log("Email: " + profile.getEmail());
+       var url = "/login";
+       var params = "email=" + profile.getEmail() + "&fname=" + profile.getGivenName() + "&lname=" + profile.getFamilyName() + "&avatar=" + profile.getImageUrl();
+       http.open("POST", url, true);
+       http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+       http.setRequestHeader("Content-length", params.length);
+       http.setRequestHeader("Connection", "close");
+       http.onreadystatechange = function() {//Call a function when the state changes.
+        if(http.readyState == 4 && http.status == 200) {
+          window.location.href = "http://gpy.io/dashboard";
+        }
+       }
+       http.send(params);
+     }
+    function onFailure(error) {
+      console.log(error);
+    }
+
+    function renderButton() {
+      gapi.signin2.render('my-signin2', {
+        'scope': 'profile email',
+        'width': 240,
+        'height': 50,
+        'longtitle': true,
+        'theme': 'dark',
+        'onsuccess': onSuccess,
+        'onfailure': onFailure
+      });
+    }
+   </script>
+<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+ </body>
+
+
+  <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+</body>

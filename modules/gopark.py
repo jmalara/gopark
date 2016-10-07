@@ -51,15 +51,29 @@ class gopark(object):
     db.commit()
     return "\nOK\n"
 
+  def checkin(self, email):
+    db = MySQLdb.connect(self.rdscnx['host'],self.rdscnx['username'],self.rdscnx['password'],self.rdscnx['db'])
+    cursor = db.cursor()
+    thesql = """select points.type, users.id, points.id from users left join points on users.id=points.user_id where points.point_time > DATE_SUB(now(), INTERVAL 24 HOUR) and users.email_address = '%s' order by points.point_time desc limit 1 """ % (email)
+    cursor.execute(thesql)
+    row_count = cursor.rowcount
+    if row_count == 0:
+      return 1
+    else:
+      row = cursor.fetchone()
+      return str(row[0])
+
   def apiZone(self):
     db = MySQLdb.connect(self.rdscnx['host'],self.rdscnx['username'],self.rdscnx['password'],self.rdscnx['db'])
     cursor = db.cursor()
-    cursor.execute("""SELECT name, cur_cars FROM zones""")
+    cursor.execute("""SELECT name, cur_cars, capacity FROM zones""")
     return_data = {}
     for row in cursor.fetchall():
       name = row[0]
       cur_cars = row[1]
-      return_data[name] = cur_cars
+      capacity = row[2]
+      diff = capacity- cur_cars
+      return_data[name] = diff
     return json.dumps(return_data)
 
   def getLeaders(self):
@@ -81,29 +95,10 @@ class gopark(object):
   def getHistory(self):
     db = MySQLdb.connect(self.rdscnx['host'],self.rdscnx['username'],self.rdscnx['password'],self.rdscnx['db'])
     cursor = db.cursor() 
-    cursor.execute("""select year(DATE_SUB(historytime, INTERVAL 7 HOUR)) as year, month(DATE_SUB(historytime, INTERVAL 7 HOUR)) as month, day(DATE_SUB(historytime, INTERVAL 7 HOUR)) as day, hour(DATE_SUB(historytime, INTERVAL 7 HOUR)) as hour, minute(DATE_SUB(historytime, INTERVAL 7 HOUR)) as minute, cars from zone_history order by historytime""")
+    cursor.execute("""select year(DATE_SUB(historytime, INTERVAL 7 HOUR)) as year, month(DATE_SUB(historytime, INTERVAL 7 HOUR)) as month, day(DATE_SUB(historytime, INTERVAL 7 HOUR)) as day, hour(DATE_SUB(historytime, INTERVAL 7 HOUR)) as hour, minute(DATE_SUB(historytime, INTERVAL 7 HOUR)) as minute, cars from zone_history where historytime > DATE_SUB(now(), INTERVAL 24 HOUR) order by historytime desc""")
     hrows = cursor.fetchall()
     theseries = ""
     for row in hrows:
       theseries = theseries +  "[Date.UTC(" + str(row[0]) + "," + str(row[1]) + "," + str(row[2]) + "," + str(row[3]) + "," + str(row[4]) + "), " + str(row[5]) + "],"
     return theseries
 
-      #hours, minutes = map(int, "00:00".split(':'))
-      #theseries = theseries + "Date.UTC(2016, 8, 5" +  str(row[0]) + ","
-    #print(theseries)
-
-    #2016-10-07 03:00:00
-
-   # [Date.UTC(2013, 3, 22, 1, 15), 12.7], 
-      #      [Date.UTC(2012, 3, 24, 3, 20), 13.5], 
-      #      [Date.UTC(2012, 2, 22, 2, 25), 18.8]
-    #return theseries
-    #7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6
-  #  sTitle = 'title: {text: \'By Application\'}'
- #   sTooltip = 'tooltip: {pointFormat: \'{series.name}: <b>${point.y:.1f} ({point.percentage:.1f}%)</b>\'}'
-#    sSeries = 'series: [{name: \'Cost\',colorByPoint: true,data: [{name: \'ATG\',y: ' + str(c_atg) + '},{name: \'IDM\',y: ' + str(c_idm) + '},{name: \'OAG\',y: ' + str(c_oag) + '},{name: \'Merlin\',y: ' + str(c_merlin) + '},{name: \'Endeca\',y: ' + str(c_endeca) + '},{name: \'OracleDB\',y: ' + str(c_oracledb) + '},{name: \'MySQL\',y: ' + str(c_mysql) + '},{name: \'BI\',y: ' + str(c_bi) + '},{name: \'EBS\',y: ' + str(c_ebs) + '},{name: \'Sabrix\',y: ' + str(c_sabrix) + '},{name: \'Digital\',y: ' + str(c_digi) + '},{name: \'Pioneer\',y: ' + str(c_pio) + '},{name: \'SOA\',y: ' + str(c_soa) + '},{name: \'TBB\',y: ' + str(c_tbb) + '},{name: \'MCT\',y: ' + str(c_cga) + '},{name: \'Other\',y: ' + str(c_other) + '}]}]'
-#    sRenderto = 'histChart'
-#    return ('{chart: {renderTo: ' + sRenderto + ', type: "pie",plotBackgroundColor: null,plotBorderWidth: null,plotShadow: false,}' + ',' + sSeries + ',' + sTooltip + ',' + sPlotOptions + ',' + sTitle + ',' + sLegend + '}')
-
-
-  #return lrows

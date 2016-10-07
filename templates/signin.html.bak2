@@ -1,0 +1,41 @@
+<html>
+<head>
+  <meta name="google-signin-client_id" content="282810351687-mgke4nloakmii97bn4nojamd0k2036p7.apps.googleusercontent.com">
+  <title>Go Park Yourself</title>
+</head>
+<body>
+  <div id="my-signin2"></div>
+  <script>
+    function onSuccess(googleUser) {
+     var profile = googleUser.getBasicProfile();
+     console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+     var ID=profile.getId();
+     var lNAme= profile.getFamilyName();
+     var fName=profile.getGivenName();
+     var ImageURL=profile.getImageUrl();
+     var Email=profile.getEmail();
+     document.cookie = Identity + "=" + profile.getId();
+     window.location.href = "http://gpy.io/dashbaord?Identity=" + ID + "&firstName=" + fName+ "&lastName=" + lNAme+ "&avatar=" + ImageURL+ "&Email=" + Email;
+     // document.cookie = lastName + "=" + profile.getFamilyName();
+     // document.cookie = firstName + "=" + profile.getGivenName();
+     // document.cookie = emailAddress + "=" + profile.getEmail();
+     // window.location.href = "http://gpy.io/dashboard";
+    }
+    function onFailure(error) {
+      console.log(error);
+    }
+    function renderButton() {
+      gapi.signin2.render('my-signin2', {
+        'scope': 'profile email',
+        'width': 240,
+        'height': 50,
+        'longtitle': true,
+        'theme': 'dark',
+        'onsuccess': onSuccess,
+        'onfailure': onFailure
+      });
+    }
+  </script>
+
+  <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+</body>

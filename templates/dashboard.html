@@ -12,18 +12,21 @@
 </div>
 
 <div class="col-xs-6 col-md-4" style="background-color:white;height:800px;">
-  <h4> How did you get to work today?</h4>
+<div style="{{ buttondisplay|safe }}" id=buttons>  
+<h4> How did you get to work today?</h4>
   <div id="worktoday" style="margin: 0 auto; width:100%" class="row">
-    <div class="col-xs-6 col-sm-3"><img onclick="sendPoint('bike')" src="static/img/bike.png" width="50px" height="50px" style="cursor:pointer" alt="some_text" >
+    <div class="col-xs-6 col-sm-3"><img onclick="sendPoint('bike')" src="static/img/bike2.png" width="50px" height="50px" style="cursor:pointer" alt="some_text" >
     <div class="names">Bicycle</div></div>
-      <div class="col-xs-6 col-sm-3"><img onclick="sendPoint('train')" src="static/img/train.jpg" width="50px" height="50px" style="cursor:pointer" alt="some_text" >
+      <div class="col-xs-6 col-sm-3"><img onclick="sendPoint('train')" src="static/img/train.png" width="50px" height="50px" style="cursor:pointer" alt="some_text" >
     <div class="names">Train</div></div>
-    <div class="col-xs-6 col-sm-3"><img onclick="sendPoint('car')" src="static/img/bus.png" width="50px" height="50px" style="cursor:pointer" alt="some_text" > 
+    <div class="col-xs-6 col-sm-3"><img onclick="sendPoint('car')" src="static/img/bus1.png" width="50px" height="50px" style="cursor:pointer" alt="some_text" > 
     <div class="names">Carpool</div></div>
-
   <!-- Add the extra clearfix for only the required viewport -->
 </div>
-
+</div>
+<div style="{{ completedisplay|safe }}" id=complete>
+<h5 id="completext">{{ completetext|safe }}</h5>
+</div>
 <h3>Leader Board</h3>
 <div id="leaderdiv">
 {{ leaderhtml|safe }}
@@ -55,9 +58,9 @@ $(function () {
         plotOptions: {
             line: {
                 dataLabels: {
-                    enabled: true
+                    enabled: false
                 },
-                enableMouseTracking: false
+                enableMouseTracking: true
             }
         },
         series: [{

@@ -1,7 +1,7 @@
-setInterval(sendPoint(0),5000);
-
 function sendPoint(type) {
-  $("#worktoday").html("Selection Complete")
+  $("#buttons").hide()
+  $("#complete").css("display", "block");
+  $("#completext").html("Thank you for choosing " + type + " today. Don't forget to check in tomorrow!")
 $.ajax({
   url: 'apipoints',
   type: 'POST',
@@ -17,3 +17,20 @@ $.ajax({
   }
 });
 }
+function refreshPoint() {
+$.ajax({
+  url: 'apipoints',
+  type: 'POST',
+  data: 'type=0',
+  success: function(data) {
+$("#leaderdiv").html(data);
+
+},
+  error: function(e) {
+  }
+});
+}
+
+$(document).ready(function(){
+setInterval(refreshPoint,5000);
+});

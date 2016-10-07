@@ -28,6 +28,8 @@ def loginuser():
   avatar = request.form['avatar'] 
   gpy.loginUser(email, fname, lname, avatar)
   session['email'] = email
+  session['avatar'] = avatar
+  session['fname'] = fname
   #gpy.apiSensor(sensorid)
   return "ok"
 
@@ -53,7 +55,13 @@ def apipoint():
 
 @application.route('/')
 def splash():
-  return render_template("splash.html")
+  return render_template("splash2.html")
+
+
+@application.route('/splash2')
+def splash2():
+  return render_template("splash2.html")
+
 
 @application.route('/signin')
 def sign():
@@ -77,7 +85,16 @@ def dashboard():
   gpy = gopark()
   leaderhtml = gpy.getLeaders()
   history = gpy.getHistory()
-  return render_template("dashboard.html", leaderhtml=leaderhtml  , history=history)
+  checkin = gpy.checkin(session['email'])
+  if checkin == 1:
+    buttondisplay = 'display:block'
+    completedisplay = 'display:none'
+    completetext = ""
+  else:
+    buttondisplay = 'display:none'
+    completedisplay = 'display:block'
+    completetext = "You chose " + checkin + " today. Don't forget to check in tomorrow!"
+  return render_template("dashboard.html", leaderhtml=leaderhtml  , history=history, buttondisplay=buttondisplay, completedisplay=completedisplay, completetext=completetext, avatar=session['avatar'], fname=session['fname'])
 
 if __name__ == "__main__":
   application.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWXs,?Ra'

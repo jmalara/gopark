@@ -15,6 +15,7 @@
        console.log('Family Name: ' + profile.getFamilyName());
        console.log("Image URL: " + profile.getImageUrl());
        console.log("Email: " + profile.getEmail());
+       var http = new XMLHttpRequest();
        var url = "/login";
        var params = "email=" + profile.getEmail() + "&fname=" + profile.getGivenName() + "&lname=" + profile.getFamilyName() + "&avatar=" + profile.getImageUrl();
        http.open("POST", url, true);
