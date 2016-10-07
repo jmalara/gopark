@@ -20,7 +20,7 @@ class gopark(object):
     cursor.execute(thesql)
     row_count = cursor.rowcount
     if row_count == 0:
-      print "stuff"
+      print("stuff")
     else:
       return "ok"     
 
