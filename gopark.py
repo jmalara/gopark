@@ -19,6 +19,17 @@ def apizone():
   gpy = gopark()
   return gpy.apiZone()
 
+@application.route('/login', methods = ['POST'])
+def loginuser():
+  gpy = gopark()
+  email = request.form['email']
+  fname = request.form['fname']
+  lname = request.form['lname']
+  avatar = request.form['avatar'] 
+  gpy.loginUser(email, fname, lname, avatar)
+  #gpy.apiSensor(sensorid)
+  return "ok"
+
 @application.route('/apiuser', methods = ['POST'])
 def apiuser():
   gpy = gopark()
