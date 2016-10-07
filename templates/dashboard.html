@@ -1,27 +1,36 @@
 {% extends "layout.html" -%}
 {% block content -%}
-<div id="mainbox" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+<div id="mainbox" style="padding-right:0px;" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
 
 
 
 <div class="row" style="padding-bottom:20px;">
-  <div class="col-xs-12 col-md-8">
-    <div style="width:100%;height:500px;background: #000;"></div>
-    <div id="container" style="width:100%; height: 300px;"></div>
+  <div style="padding-left:-10px;" class="col-xs-12 col-md-8">
+    <div style="width:100%;height:710px;">
+        <canvas id="myDrawing" width="1120" height="768">
+            <p>Your browser doesn't support canvas.</p>
+    	</canvas>
+    </div>
+    <div id="container" style="border:2px solid black;margin-top:-25px;width:1090px; margin-left:10px; height: 300px;"></div>
 </div>
 
-<div class="col-xs-6 col-md-4" style="background-color:white;height:800px;">
+<div class="col-xs-6 col-md-4" style="width: 400px;margin-top:10px;border:2px solid black;background-color:white;height:975px;">
 <div style="{{ buttondisplay|safe }}" id=buttons>  
 <h4> How did you get to work today?</h4>
   <div id="worktoday" style="margin: 0 auto; width:100%" class="row">
-    <div class="col-xs-6 col-sm-3"><img onclick="sendPoint('bike')" src="static/img/bike2.png" width="50px" height="50px" style="cursor:pointer" alt="some_text" >
+    <div class="col-xs-6 col-sm-3"><img onclick="sendPoint('bike')" src="static/img/bike_gold.png" width="50px" height="50px" style="cursor:pointer" alt="some_text" >
     <div class="names">Bicycle</div></div>
-      <div class="col-xs-6 col-sm-3"><img onclick="sendPoint('train')" src="static/img/train.png" width="50px" height="50px" style="cursor:pointer" alt="some_text" >
-    <div class="names">Train</div></div>
-    <div class="col-xs-6 col-sm-3"><img onclick="sendPoint('car')" src="static/img/bus1.png" width="50px" height="50px" style="cursor:pointer" alt="some_text" > 
+    
+    <div class="col-xs-6 col-sm-3"><img onclick="sendPoint('train')" src="static/img/train.png" width="50px" height="50px" style="cursor:pointer" alt="some_text" >
+    <div class="names">&nbsp;&nbsp;Train</div></div>
+    
+    <div class="col-xs-6 col-sm-3"><img onclick="sendPoint('car')" src="static/img/bus_gold.png" width="50px" height="50px" style="cursor:pointer" alt="some_text" > 
     <div class="names">Carpool</div></div>
-  <!-- Add the extra clearfix for only the required viewport -->
+    
+    <div class="col-xs-6 col-sm-3"><img onclick="sendPoint('carself')" src="static/img/car_gold.png" width="50px" height="50px" style="cursor:pointer" alt="some_text" >
+    <div class="names">&nbsp;&nbsp;&nbsp;Car</div></div>
+	<!-- Add the extra clearfix for only the required viewport -->
 </div>
 </div>
 <div style="{{ completedisplay|safe }}" id=complete>
@@ -70,6 +79,85 @@ $(function () {
     });
 });
 </script>
+
+
+
+<script>
+                        angular.module('get_counts', [])
+                                .controller('car_counts', function($scope, $http) {
+                                $scope.getData = function(){
+                                        $http.get('http://gpy.io/apizone').
+                                                then(function(response) {
+                                                        $scope.car_counts = response.data;
+                                                        var drawingCanvas = document.getElementById('myDrawing');
+                                                        if(drawingCanvas.getContext) {
+                                                                var context = drawingCanvas.getContext('2d');
+                                                                if ($scope.car_counts.North < 1){
+                                                                    context.fillStyle = "#CB4335";
+                                                                } else if ($scope.car_counts.North < 2){
+                                                                    context.fillStyle = "#F4D03F";
+                                                                } else {
+                                                                    context.fillStyle = "#2ECC71";
+                                                                }
+                                                                context.fillRect(400, 10, 700, 650);
+                                                                context.strokeRect(400, 10, 700, 650);
+
+                                                                context.fillStyle = "#F4D03F";
+                                                                context.fillRect(10, 10, 390, 650)
+                                                                context.strokeRect(10, 10, 390, 650)
+                                                                if ($scope.car_counts.Underground < 1){
+                                                                    context.fillStyle = "#CB4335";
+                                                                } else if ($scope.car_counts.Underground < 3){
+                                                                    context.fillStyle = "#F4D03F";
+                                                                } else {
+                                                                    context.fillStyle = "#2ECC71";
+                                                                }
+                                                                context.fillRect(210, 210, 640, 450);
+                                                                context.strokeRect(210, 210, 640, 450);
+
+                                                                context.fillStyle = "#CB4335";
+                                                                context.fillRect(210, 10, 190, 350)
+                                                                context.strokeRect(210, 10, 190, 350)
+
+                                                                context.fillStyle = "#CB4335";
+                                                                context.fillRect(10, 510, 550, 150)
+                                                                context.strokeRect(10, 510, 550, 150)
+
+                                                                context.fillStyle = "#2ECC71";
+                                                                context.fillRect(950, 50, 150, 450)
+                                                                context.strokeRect(950, 50, 150, 450)
+
+                                                                context.fillStyle = "#000";
+                                                                context.font="56px Helvetica";
+                                                                context.fillText("10",80,270);
+                                                                context.fillText("1",290,190);
+                                                                context.fillText("9",270,610);
+                                                                if ($scope.car_counts.Underground < 3){
+                                                                    context.fillStyle = "#000";
+                                                                } else {
+                                                                    context.fillStyle = "#FFF";
+                                                                }
+                                                                context.fillText($scope.car_counts.Underground,550,410);
+                                                                if ($scope.car_counts.North < 2){
+                                                                    context.fillStyle = "#000";
+                                                                } else {
+                                                                    context.fillStyle = "#FFF";
+                                                                }
+                                                                context.fillText($scope.car_counts.North,700,120);
+                                                                context.fillStyle = "#FFF";
+                                                                context.fillText("10",1000,290);
+                                                        }
+                                                });
+
+                                        };
+
+                                setInterval($scope.getData, 5000);
+
+                        });
+                </script>
+
+
+
 </div>
 </div>
 </div>

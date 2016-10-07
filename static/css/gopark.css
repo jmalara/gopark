@@ -1,6 +1,8 @@
 .navbar-inverse {
     color: #354964 !important;
-    background-color: white !important;
+    background-color: #7fb3ff !important;
+    border-bottom: 2px solid white;
+
   }
 
 .navbar-brand {
@@ -12,8 +14,8 @@
 }
 
 #mainbox {
-  margin-left:20px;
-  margin-right:20px;
+  margin-left:-10px;
+  margin-right:10px;
   width:100%
 }
 

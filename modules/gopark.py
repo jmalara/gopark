@@ -29,15 +29,23 @@ class gopark(object):
   def apiPoints(self, user, thetype):
     if thetype == 'bike':
       pointval = 3
+      typetext = 'bicycle'
     elif thetype == 'train':
       pointval = 3
+      typetext = 'train'
     elif thetype == 'car':
       pointval = 2
+      typetext = 'carpool'
+    elif thetype == 'carself':
+      pointval = 1
+      typetext = 'car'
     else:
       pointval = 0
 
     if pointval == 0:
       return "ok"
+    
+    t
     db = MySQLdb.connect(self.rdscnx['host'],self.rdscnx['username'],self.rdscnx['password'],self.rdscnx['db'])
     cursor = db.cursor()
     thesql = """select id from users where email_address = '%s' limit 1""" % (user)
@@ -45,7 +53,7 @@ class gopark(object):
     cursor.execute(thesql)
     row = cursor.fetchone()
     userid = row[0]
-    thesql = """INSERT INTO points (type, points, user_id )VALUES ('%s','%s','%s')""" % (thetype, pointval, userid)
+    thesql = """INSERT INTO points (type, points, user_id )VALUES ('%s','%s','%s')""" % (typetext, pointval, userid)
     print(thesql)
     cursor.execute(thesql)
     db.commit()
@@ -79,7 +87,7 @@ class gopark(object):
   def getLeaders(self):
     db = MySQLdb.connect(self.rdscnx['host'],self.rdscnx['username'],self.rdscnx['password'],self.rdscnx['db'])
     cursor = db.cursor() 
-    cursor.execute("""select firstname, lastname, avatar as avatar, (SELECT SUM(points) from points where users.id=points.user_id) as points from users order by points desc limit 5""")
+    cursor.execute("""select firstname, lastname, avatar as avatar, (SELECT SUM(points) from points where users.id=points.user_id) as points from users order by points desc limit 10""")
     lrows = cursor.fetchall()
     html = ''
     for row in lrows:
