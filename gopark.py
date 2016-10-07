@@ -29,6 +29,10 @@ def splash():
 def sign():
   return render_template("signin.html")
 
+@application.route('/zito')
+def zito():
+  return render_template("zito.html")
+
 @application.route('/signup')
 def signup():
   return render_template("signup.html")
@@ -41,9 +45,7 @@ def direct3():
 def dashboard():
   gpy = gopark()
   theleaders = gpy.getLeaders()
-  for row in theleaders:
-    print("test")
-  return render_template("dashboard.html")
+  return render_template("dashboard.html", theleaders=theleaders)
 
 if __name__ == "__main__":
   application.run(host='0.0.0.0', port=5000, debug=True)

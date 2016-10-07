@@ -27,11 +27,10 @@ class gopark(object):
   def getLeaders(self):
     db = MySQLdb.connect(self.rdscnx['host'],self.rdscnx['username'],self.rdscnx['password'],self.rdscnx['db'])
     cursor = db.cursor() 
-    cursor.execute("""select firstname, lastname from users order by firstname asc limit 5""")
+    cursor.execute("""select firstname, lastname,  (SELECT SUM(points) from points where users.id=points.user_id) as points from users order by points desc limit 5""")
     lrows = cursor.fetchall()
-    for row in lrows:
-      print("test")
-    #return lrows
+
+    return lrows
 
 
 
