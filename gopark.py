@@ -17,7 +17,7 @@ def api():
 @application.route('/apizone')
 def apizone():
   gpy = gopark()
-  return   gpy.apiZone()
+  return gpy.apiZone()
 
 @application.route('/apiuser', methods = ['POST'])
 def apiuser():
@@ -26,7 +26,7 @@ def apiuser():
   sensorid =jsondata.get("sensor") 
   print("\n" + json.dumps(request.json) + "\n")
   print("\n" + jsondata.get("sensor") + "\n")
-  gpy.apiSensor(sensorid)
+  #gpy.apiSensor(sensorid)
   return "1"
 
   #retVal = lh.sensorAPI(
