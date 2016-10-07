@@ -31,8 +31,13 @@ class gopark(object):
       pointval = 3
     elif thetype == 'train':
       pointval = 3
-    else:
+    elif thetype == 'car':
       pointval = 2
+    else:
+      pointval = 0
+
+    if pointval == 0:
+      return "ok"
     db = MySQLdb.connect(self.rdscnx['host'],self.rdscnx['username'],self.rdscnx['password'],self.rdscnx['db'])
     cursor = db.cursor()
     thesql = """select id from users where email_address = '%s' limit 1""" % (user)

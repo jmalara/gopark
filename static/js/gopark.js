@@ -1,3 +1,5 @@
+setInterval(sendPoint(0),5000);
+
 function sendPoint(type) {
   $("#worktoday").html("Selection Complete")
 $.ajax({
