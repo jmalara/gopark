@@ -20,22 +20,23 @@
                                         $http.get('http://gpy.io/apizone').
                                                 then(function(response) {
                                                         $scope.car_counts = response.data;
+                                                        var drawingCanvas = document.getElementById('myDrawing');
+                                                        if(drawingCanvas.getContext) {
+                                                                var context = drawingCanvas.getContext('2d');
+                                                                if ($scope.car_counts.Carpool > 5){
+                                                                        context.fillStyle = "red";
+                                                                } else {
+                                                                        context.fillStyle = "green";
+                                                                }
+                                                                context.fillRect(10, 10, 100, 100);
+                                                        }
                                                 });
+
                                         };
 
                                 setInterval($scope.getData, 1000);
+
                         });
-                </script>
-                <script>
-                doShit = function(){
-                                var drawingCanvas = document.getElementById('myDrawing');
-                                if(drawingCanvas.getContext) {
-                                        var context = drawingCanvas.getContext('2d');
-                                        context.fillStyle = "red";
-                                        context.fillRect(10, 10, 100, 100);
-                                }
-                        }
-                        setInterval(doShit, 1000);
                 </script>
         </body>
 </html>
